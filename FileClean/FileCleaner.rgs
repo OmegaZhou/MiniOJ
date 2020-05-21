@@ -1,0 +1,26 @@
+HKCR
+{
+	FileCleaner.1 = s 'FileCleaner class'
+	{
+		CLSID = s '{1faef408-1986-4988-a38d-a5ab6268eb7d}'
+	}
+	FileCleaner = s 'FileCleaner class'
+	{		
+		CurVer = s 'FileCleaner.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1faef408-1986-4988-a38d-a5ab6268eb7d} = s 'FileCleaner class'
+		{
+			ProgID = s 'FileCleaner.1'
+			VersionIndependentProgID = s 'FileCleaner'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{f5730342-1751-4055-abe7-fd3772b552dd}'
+			Version = s '1.0'
+		}
+	}
+}

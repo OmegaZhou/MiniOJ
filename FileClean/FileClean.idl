@@ -1,0 +1,38 @@
+﻿// FileClean.idl: FileClean 的 IDL 源
+//
+
+// 此文件将由 MIDL 工具处理以
+// 生成类型库(FileClean.tlb)和封送处理代码。
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(a5430fed-6bab-4a87-b4f6-e76ff266b246),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IFileCleaner : IDispatch
+{
+	[id(1)] HRESULT AddFile([in] BSTR dir);
+	[id(2)] HRESULT StartClean();
+};
+[
+	uuid(f5730342-1751-4055-abe7-fd3772b552dd),
+	version(1.0),
+]
+library FileCleanLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(1faef408-1986-4988-a38d-a5ab6268eb7d)
+	]
+	coclass FileCleaner
+	{
+		[default] interface IFileCleaner;
+	};
+};
+
+import "shobjidl.idl";
