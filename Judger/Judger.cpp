@@ -34,7 +34,7 @@ namespace JudgeCore
 
 	bool Judger::compile_program(String^ code,String^ target_dir, Language language)
 	{
-		LanguageInfo^ language_info = language_infos[language];
+		LanguageInfo^ language_info = language_infos[(int)language];
 		
 		StringBuilder^ argument = gcnew StringBuilder();
 		String^ file_name = target_dir + "\\tmp";
@@ -59,17 +59,17 @@ namespace JudgeCore
 				//p->Refresh();
 				peak_mem = p->PeakPagedMemorySize64;
 			}
-			p->WaitForExit(info->max_time * 200);
+			p->WaitForExit(info->max_time / 5);
 		}
 		if (!p->HasExited) {
 			p->Kill();
 		}
 		p->WaitForExit();
 		auto& t = p->TotalProcessorTime;
-		if (info->max_time < t.TotalSeconds) {
+		if (info->max_time < t.TotalMilliseconds) {
 			return JudgeStatus::TimeLimitError;
 		}
-		if (info->max_mem * 1024 * 1024 < peak_mem) {
+		if (info->max_mem * 1024 < peak_mem) {
 			return JudgeStatus::MemoryLimitError;
 		}
 		if (p->ExitCode != 0) {

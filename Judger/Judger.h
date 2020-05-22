@@ -3,11 +3,11 @@ using System::String;
 using System::Int32;
 namespace JudgeCore
 {
-	public enum JudgeStatus
+	public enum class JudgeStatus
 	{
-		WrongAnswer, Accept, TimeLimitError, RuntimeError, MemoryLimitError,CompileError,SystemError
+		WrongAnswer, Accept, TimeLimitError, RuntimeError, MemoryLimitError,CompileError,SystemError,Waiting,Running
 	};
-	public enum Language
+	public enum class Language
 	{
 		CPP
 	};
@@ -23,7 +23,7 @@ namespace JudgeCore
 	{
 	public:
 		 Int32 max_time;			//单位为Mb
-		 Int32 max_mem;				//单位为s
+		 Int32 max_mem;				//单位为ms
 		 String^ code;
 		 String^ test_case;
 		 String^ right_result;
