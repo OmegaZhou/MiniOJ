@@ -18,3 +18,5 @@
 */*.csproj
 */bin
 /packages
+*/*.snk
+*/problem

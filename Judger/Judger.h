@@ -31,15 +31,23 @@ namespace JudgeCore
 		 String^ uuid;
 	};
 
+	public ref class JudgeResult
+	{
+	public:
+		int time;
+		int memory;
+		JudgeStatus status;
+	};
+
 	public ref class Judger
 	{
 	public:
-		static JudgeStatus judge(const ProblemInfo^ info);
+		static JudgeResult^ judge(const ProblemInfo^ info);
 	private:
 		static void setStartInfo(System::Diagnostics::ProcessStartInfo^ info, String^ file_name, String^ argument);
 		static bool compile_program(String^ code, String^ target_dir, Language language);
 		static bool test_result(String^ test_result, String^ right_result);
-		static JudgeStatus execute_program(const ProblemInfo^ info, String^ target_dir);
+		static JudgeResult^ execute_program(const ProblemInfo^ info, String^ target_dir);
 		static array<LanguageInfo^>^ language_infos = { gcnew LanguageInfo(" {0}.cpp  -O2 -o {1}.exe","g++","cpp") };
 	};
 }

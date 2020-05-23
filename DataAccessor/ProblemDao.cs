@@ -10,7 +10,7 @@ namespace DataAccessor
     public class Problem
     {
         public int ProblemId { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = null;
         public int MaxTime { get; set; }
         public int MaxMemory { get; set; }
     }
@@ -38,6 +38,15 @@ namespace DataAccessor
             {
                 var sql = "select * from problem limit @start_from,@length";
                 return connection.Query<Problem>(sql, new { start_from,length }).ToList();
+            }
+        }
+
+        static public Problem GetProblem(string title)
+        {
+            using (var connection = ConnectionGetter.GetConnection())
+            {
+                var sql = "select * from problem where title=@title";
+                return connection.QueryFirstOrDefault<Problem>(sql, new { title });
             }
         }
     }

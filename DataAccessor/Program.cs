@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
-using MySql;
 namespace DataAccessor
 {
     class Program
@@ -46,13 +45,15 @@ namespace DataAccessor
                 //var i = UserDao.SearchUser("ddd");
                 //Console.WriteLine(i.Nickname);
                 //var items = UserDao.GetUsers(0, 10);
+
+                var i7 = UserDao.SearchUser("aaa");
+
             }
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
                 Utils.Logger.GetInstance().Error(e.Message);
             }
-            
         }
     }
 }

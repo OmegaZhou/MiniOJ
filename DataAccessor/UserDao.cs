@@ -13,6 +13,10 @@ namespace DataAccessor
         public int UserId { get; set; }
         public string Nickname { get; set; }
         public int SolvedNumber { get; set; }
+        public User()
+        {
+            UserId = -1;
+        }
     }
     public class UserDao
     {
@@ -58,12 +62,12 @@ namespace DataAccessor
             }
         }
 
-        static public bool CheckPassword(string nickname, string password)
+        static public User CheckPassword(string nickname, string password)
         {
             using (var connection = ConnectionGetter.GetConnection())
             {
-                var sql = "select count(*) from user where nickname=@nickname and password=@password";
-                return connection.QueryFirst<int>(sql, new { nickname, password }) == 1;
+                var sql = "select * from user where nickname=@nickname and password=@password";
+                return connection.QueryFirstOrDefault<User>(sql, new { nickname, password });
             }
         }
     }

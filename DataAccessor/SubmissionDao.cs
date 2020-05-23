@@ -23,16 +23,27 @@ namespace DataAccessor
     }
     public class SubmissionDao
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="submission"></param>
+        /// <returns></returns>
+        /// 需要提供UserId,ProblemId,Code,Uuid,Lang
         static public bool AddSubmission(Submission submission)
         {
             using(var connection = ConnectionGetter.GetConnection())
             {
-                var sql = "insert into submission(UserId,ProblemId,Status,Code,Lang,Uuid) values(@UserId,@ProblemId,@Status,@Code,@Lang,@Uuid)";
+                var sql = "insert into submission(UserId,ProblemId,Code,Lang,Uuid) values(@UserId,@ProblemId,@Code,@Lang,@Uuid)";
                 return connection.Execute(sql, submission)==1;
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="submission"></param>
+        /// <returns></returns>
+        /// 需要提供Status,Uuid
         static public bool ChangeSubmissionStatus(Submission submission)
         {
             using (var connection = ConnectionGetter.GetConnection())
@@ -41,6 +52,13 @@ namespace DataAccessor
                 return connection.Execute(sql, submission) == 1;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="submission"></param>
+        /// <returns></returns>
+        /// 需要提供Status,Time,Memory,Uuid
         static public bool SetResult(Submission submission)
         {
             using (var connection = ConnectionGetter.GetConnection())
@@ -57,6 +75,16 @@ namespace DataAccessor
                 var sql = "select * from submission natrual join (select UserId,Nickname from User) as tmp " +
                     " order by CreateTime DESC limit @start_from,@length";
                 return connection.Query<Submission>(sql,new { start_from, length }).ToList();
+            }
+        }
+
+        static public List<Submission> GetSubmissionsByOne(string nickname, int start_from, int length)
+        {
+            using (var connection = ConnectionGetter.GetConnection())
+            {
+                var sql = "select * from submission natrual join (select UserId,Nickname from User where Nickname=@nickname) as tmp " +
+                    " order by CreateTime DESC limit @start_from,@length";
+                return connection.Query<Submission>(sql, new {nickname,start_from, length }).ToList();
             }
         }
         
