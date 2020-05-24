@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+@@include("./include/head.html")
+
+<body>
+
+    <div id="nav">
+        @@include("./include/nav.html")
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <table class="table table-striped row mx-0">
+                <thead class="w-100">
+                    <tr class="row mx-0">
+                        <th scope="col" class="col-2">问题ID</th>
+                        <th scope="col" class="col-10">标题</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: problems" class="w-100">
+                    <tr class="row mx-0">
+                        <td class="col-2"><a data-bind="attr:{href:'/problem.html?title='+encodeURIComponent($data.title)}"><span
+                                    data-bind="text:$data.problemId"></span></a></td>
+                        <td class="col-10"><a data-bind="attr:{href:'/problem.html?title='+encodeURIComponent($data.title)}"><span
+                                    data-bind="text:$data.title"></span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item mr-auto" data-bind="if:model.problem_page()>0">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" onclick="pre_problem_page()">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">上一页</span>
+                        </a>
+                    </li>
+                    <li class="page-item ml-auto" data-bind="if:model.problems().length==page_len">
+                        <a class="page-link" onclick="next_problem_page()" href="javascript:void(0)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">下一页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+    </div>
+
+</body>
+<script src="js/problem.js"></script>
+<script>
+    init();
+    problem_init();
+</script>
+</html>

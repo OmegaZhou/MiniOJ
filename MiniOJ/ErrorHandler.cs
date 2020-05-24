@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MiniOJ.Entity;
 using Newtonsoft.Json;
 using System;
@@ -34,11 +35,16 @@ namespace MiniOJ
         }
         private async Task HandleExceptionAsync(HttpContext context, MyException exception)
         {
+            Utils.Logger.GetInstance().Log(exception.Message);
             var response = context.Response;
             response.ContentType = "application/json";
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await response.WriteAsync(JsonConvert.SerializeObject(exception.Result));
-
+            response.StatusCode = 200;
+            //await response.WriteAsync(JsonConvert.SerializeObject(new ActionResult<Result>(exception.Result)));
+            await new JsonResult(exception.Result).ExecuteResultAsync(new ActionContext
+            {
+                HttpContext = context,
+            });
         }
     }
 }

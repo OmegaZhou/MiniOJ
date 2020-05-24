@@ -55,12 +55,12 @@ namespace MiniOJ.Services
                 StreamReader reader = new StreamReader(fs);
                 result.Content = reader.ReadToEnd();
             }
-            using (FileStream fs = new FileStream(dir + test_case_path, FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream fs = new FileStream(dir + test_case_path, FileMode.OpenOrCreate, FileAccess.Read))
             {
                 StreamReader reader = new StreamReader(fs);
                 result.TestCase = reader.ReadToEnd();
             }
-            using (FileStream fs = new FileStream(dir + right_result_path, FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream fs = new FileStream(dir + right_result_path, FileMode.OpenOrCreate, FileAccess.Read))
             {
                 StreamReader reader = new StreamReader(fs);
                 result.RightResult = reader.ReadToEnd();

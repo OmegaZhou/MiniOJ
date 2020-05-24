@@ -17,7 +17,7 @@ namespace MiniOJ.Controllers
     public class UserController : ControllerBase
     {
         [HttpPost("SignUp")]
-        public Result SignUp([FromBody] SignInInfo signInInfo)
+        public Result SignUp([FromForm] SignInInfo signInInfo)
         {
             if (UserServices.CheckNickname(signInInfo.Nickname))
             {
@@ -30,14 +30,13 @@ namespace MiniOJ.Controllers
             }
             else
             {
-                HttpContext.Session.SetString("UserId", user.UserId.ToString());
-                HttpContext.Session.SetString("UserName", user.Nickname);
-                return new Result<User> { IsSucess = true, Data = user };
+                SaveSignInStatus(user);
+                return new Result<User> { IsSuccess = true, Data = user };
             }
         }
 
         [HttpPost("SignIn")]
-        public Result SignIn([FromBody] SignInInfo signInInfo)
+        public Result SignIn([FromForm]SignInInfo signInInfo)
         {
             var name = HttpContext.Session.GetString("UserName");
             if (name != null)
@@ -47,17 +46,16 @@ namespace MiniOJ.Controllers
             var user = UserServices.SignIn(signInInfo.Nickname, signInInfo.Password);
             if (user == null)
             {
-                return new Result { IsSucess = true, Message = "Nickname or password wrong" };
+                return new Result { IsSuccess = true, Message = "Nickname or password wrong" };
             }
             else
             {
-                HttpContext.Session.SetString("UserId", user.UserId.ToString());
-                HttpContext.Session.SetString("UserName", user.Nickname);
-                return new Result<User> { IsSucess = true, Data = user };
+                SaveSignInStatus(user);
+                return new Result<User> { IsSuccess = true, Data = user };
             }
         }
 
-        [HttpGet("GetUsers/{start_from}/{lenght}")]
+        [HttpGet("GetUsers/{start_from}/{length}")]
         public Result<List<User>> GetUsers(int start_from,int length)
         {
             return new Result<List<User>> { Data = UserServices.GetUsers(start_from, length) };
@@ -77,6 +75,24 @@ namespace MiniOJ.Controllers
                 throw new UserException(UserException.Type.NotSiginIn);
             }
             return new Result<User> { Data = UserServices.GetUser(name) };
+        }
+
+        [HttpGet("CheckSignInStatus")]
+        public Result CheckSiginInStatus()
+        {
+            return new Result<string>(HttpContext.Session.GetString("UserName"));
+        }
+
+        [HttpPost("Logout")]
+        public Result Logout()
+        {
+            HttpContext.Session.Clear();
+            return new Result();
+        }
+        private void SaveSignInStatus(User user)
+        {
+            HttpContext.Session.SetInt32("UserId", user.UserId);
+            HttpContext.Session.SetString("UserName", user.Nickname);
         }
     }
 }

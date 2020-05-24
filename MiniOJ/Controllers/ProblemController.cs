@@ -19,7 +19,7 @@ namespace MiniOJ.Controllers
         [HttpPost("AddProblem")]
         public Result AddProblem()
         {
-            if (HttpContext.Session.GetString("UserId") == null)
+            if (HttpContext.Session.GetInt32("UserId") == null)
             {
                 throw new UserException(UserException.Type.NotSiginIn);
             }
@@ -57,15 +57,15 @@ namespace MiniOJ.Controllers
         }
 
         [HttpGet("GetProblems/{start_from}/{len}")]
-        public List<Problem> GetProblems(int start_from,int len)
+        public Result<List<Problem>> GetProblems(int start_from,int len)
         {
-            return ProblemServices.GetProblems(start_from, len);
+            return new Result<List<Problem>>(ProblemServices.GetProblems(start_from, len));
         }
 
-        [HttpGet("GetProblem/{title}")]
-        public OutputProblemInfo GetProblem(string title)
+        [HttpPost("GetProblem")]
+        public Result<OutputProblemInfo> GetProblem([FromForm]string title)
         {
-            return ProblemServices.GetProblemInfo(title);
+            return new Result<OutputProblemInfo>(ProblemServices.GetProblemInfo(title));
         }
     }
 }

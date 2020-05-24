@@ -5,11 +5,11 @@ namespace JudgeCore
 {
 	public enum class JudgeStatus
 	{
-		WrongAnswer, Accept, TimeLimitError, RuntimeError, MemoryLimitError,CompileError,SystemError,Waiting,Running
+		WrongAnswer, Accept, TimeLimitError, RuntimeError, MemoryLimitError, CompileError, SystemError, Waiting, Running
 	};
 	public enum class Language
 	{
-		CPP
+		CPP, C, JAVA
 	};
 	public ref class LanguageInfo
 	{
@@ -22,13 +22,13 @@ namespace JudgeCore
 	public ref class ProblemInfo
 	{
 	public:
-		 Int32 max_time;			//单位为Mb
-		 Int32 max_mem;				//单位为ms
-		 String^ code;
-		 String^ test_case;
-		 String^ right_result;
-		 Language language;
-		 String^ uuid;
+		Int32 max_time;			//单位为Mb
+		Int32 max_mem;				//单位为ms
+		String^ code;
+		String^ test_case;
+		String^ right_result;
+		Language language;
+		String^ uuid;
 	};
 
 	public ref class JudgeResult
@@ -47,8 +47,9 @@ namespace JudgeCore
 		static void setStartInfo(System::Diagnostics::ProcessStartInfo^ info, String^ file_name, String^ argument);
 		static bool compile_program(String^ code, String^ target_dir, Language language);
 		static bool test_result(String^ test_result, String^ right_result);
-		static JudgeResult^ execute_program(const ProblemInfo^ info, String^ target_dir);
-		static array<LanguageInfo^>^ language_infos = { gcnew LanguageInfo(" {0}.cpp  -O2 -o {1}.exe","g++","cpp") };
+		static JudgeResult^ execute_program(const ProblemInfo^ info, String^ target_dir,Language lang);
+		static array<LanguageInfo^>^ language_infos = { gcnew LanguageInfo(" {0}.cpp  -O2 -o {1}.exe","g++","cpp"),
+			gcnew LanguageInfo("{0}.c -O2 -o {1}.exe","gcc","c"),gcnew LanguageInfo("-O {0}.java ","javac","java") };
 	};
 }
 

@@ -1,0 +1,102 @@
+<div class="container-fluid navbar-fixed-top" id="nav">
+  <div class="row nav-tabs">
+    <div class="col-md-1"></div>
+    <nav class="col-md-10 navbar navbar-expand-lg navbar-light bg-light">
+      <ul class="nav navbar-nav">
+        <li class="active nav-item" id="home_href"><a class="nav-link" href="/index.html">首页</a></li>
+        <li class="nav-item"><a class="nav-link" href="/problemlist.html">题库</a></li>
+        <li class="nav-item"><a class="nav-link" href="/submissions.html">提交记录</a></li>
+        <li class="nav-item"><a class="nav-link" href="/rating.html">排行榜</a></li>
+      </ul>
+      <div class="ml-auto d-none" id="right_nav">
+        <div id="sign_btn" data-bind="if:model.nickname()==null">
+          <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal"
+            data-target="#signin_modal">登录</button>
+          <button type="button" class="btn btn-default navbar-btn" data-toggle="modal"
+            data-target="#signup_modal">注册</button>
+        </div>
+  
+        <div data-bind="if:nickname" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" data-bind="text:nickname">
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" data-bind="attr:{href:'/home.html?nickname='+model.nickname()}">主页</a>
+                <a class="dropdown-item" href="#" onclick="Logout()">登出</a>
+                <div class="dropdown-divider"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+
+    </nav>
+  </div>
+</div>
+
+<div class="modal fade" id="signin_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="exampleInputEmail1">用户名</label>
+            <input type="text" class="form-control" id="nickname_for_signin" aria-describedby="emailHelp">
+          </div>
+          <div class="form-group">
+            <label for="Password">密码</label>
+            <input type="password" class="form-control" id="password_for_signin">
+          </div>
+          <span id="signin_info" class="info text-danger" data-bind="text:signin_info"></span>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="SignIn()">登录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signup_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="exampleInputEmail1">用户名</label>
+            <input type="text" class="form-control" id="nickname_for_signup" aria-describedby="emailHelp">
+          </div>
+          <div class="form-group">
+            <label for="Password">密码</label>
+            <input type="password" class="form-control" id="password_for_signup">
+          </div>
+          <div class="form-group">
+            <label for="Password">确认密码</label>
+            <input type="password" class="form-control" id="password_for_signup2">
+          </div>
+          <span id="signup_info" class="info text-danger text-center" data-bind="text:signup_info"></span>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="SignUp()">注册</button>
+      </div>
+    </div>
+  </div>
+</div>

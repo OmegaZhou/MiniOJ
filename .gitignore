@@ -20,3 +20,9 @@
 /packages
 */*.snk
 */problem
+*/node_modules
+**/js/src-min/
+**/js/bootstrap*
+**/js/knockout*
+**/js/jquery*
+**/css/bootstrap*

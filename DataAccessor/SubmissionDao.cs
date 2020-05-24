@@ -20,6 +20,7 @@ namespace DataAccessor
         public int Memory { get; set; }
         public int Time { get; set; }
         public string NickName { get; set; }
+        public string Title { get; set; }
     }
     public class SubmissionDao
     {
@@ -31,10 +32,10 @@ namespace DataAccessor
         /// 需要提供UserId,ProblemId,Code,Uuid,Lang
         static public bool AddSubmission(Submission submission)
         {
-            using(var connection = ConnectionGetter.GetConnection())
+            using (var connection = ConnectionGetter.GetConnection())
             {
                 var sql = "insert into submission(UserId,ProblemId,Code,Lang,Uuid) values(@UserId,@ProblemId,@Code,@Lang,@Uuid)";
-                return connection.Execute(sql, submission)==1;
+                return connection.Execute(sql, submission) == 1;
             }
         }
 
@@ -68,13 +69,14 @@ namespace DataAccessor
             }
         }
 
-        static public List<Submission> GetSubmissions(int start_from,int length)
+        static public List<Submission> GetSubmissions(int start_from, int length)
         {
             using (var connection = ConnectionGetter.GetConnection())
             {
-                var sql = "select * from submission natrual join (select UserId,Nickname from User) as tmp " +
+                var sql = "select * from submission natural join (select UserId,Nickname from User) as tmp1 " +
+                    " natural join (select ProblemId,Title from Problem) as tmp2 " +
                     " order by CreateTime DESC limit @start_from,@length";
-                return connection.Query<Submission>(sql,new { start_from, length }).ToList();
+                return connection.Query<Submission>(sql, new { start_from, length }).ToList();
             }
         }
 
@@ -82,11 +84,12 @@ namespace DataAccessor
         {
             using (var connection = ConnectionGetter.GetConnection())
             {
-                var sql = "select * from submission natrual join (select UserId,Nickname from User where Nickname=@nickname) as tmp " +
+                var sql = "select * from submission natural join (select UserId,Nickname from User where Nickname=@nickname) as tmp1 " +
+                    " natural join (select ProblemId,Title from Problem) as tmp2 " +
                     " order by CreateTime DESC limit @start_from,@length";
-                return connection.Query<Submission>(sql, new {nickname,start_from, length }).ToList();
+                return connection.Query<Submission>(sql, new { nickname, start_from, length }).ToList();
             }
         }
-        
+
     }
 }

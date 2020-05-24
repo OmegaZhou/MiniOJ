@@ -1,4 +1,5 @@
 ﻿using DataAccessor;
+using Microsoft.AspNetCore.Razor.Language;
 using MiniOJ.Entity;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,9 @@ namespace MiniOJ.Services
     {
         private static Dictionary<string, JudgeCore.Language> lang_map_ = new Dictionary<string, JudgeCore.Language>
         {
-            { "CPP", JudgeCore.Language.CPP }
+            { "CPP", JudgeCore.Language.CPP },
+            {"C",JudgeCore.Language.C },
+            {"JAVA",JudgeCore.Language.JAVA }
         };
         private static JudgeCore.Language GetLanguage(string str)
         {
@@ -59,6 +62,26 @@ namespace MiniOJ.Services
                   SubmissionDao.SetResult(submission);
               });
             task.Start();
+        }
+
+        public static List<Submission> GetSubmissions(int start_from,int len)
+        {
+            return SubmissionDao.GetSubmissions(start_from, len);
+        }
+
+        public static List<Submission> GetSubmissions(string nickname,int start_from,int len)
+        {
+            return SubmissionDao.GetSubmissionsByOne(nickname, start_from, len);
+        }
+        public static void SubmissionsFilter(List<Submission> submissions,int? user_id)
+        {
+            foreach(var item in submissions)
+            {
+                if (item.UserId != user_id)
+                {
+                    item.Code = null;
+                }
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace MiniOJ.Entity
     {
         public MySytemException()
         {
-            Result = new Result { IsSucess = false, Message = "System Error" };
+            Result = new Result { IsSuccess = false, Message = "System Error" };
         }
     }
 
@@ -26,7 +26,7 @@ namespace MiniOJ.Entity
         }
         public UserException(Type type)
         {
-            Result = new Result { IsSucess = true, Message = GetMessageFromType(type) };
+            Result = new Result { IsSuccess = false, Message = GetMessageFromType(type) };
         }
         private string GetMessageFromType(Type type)
         {

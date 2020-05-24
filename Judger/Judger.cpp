@@ -13,14 +13,15 @@ namespace JudgeCore
 		result->status = JudgeStatus::SystemError;
 		String^ uuid = info->uuid;
 		String^ current_dir = Directory::GetCurrentDirectory();
-		String^ target_dir = current_dir + "\\tmp\\" + uuid;
+		String^ target_dir = current_dir+"\\tmp\\" + uuid;
 		try {
 			
 			Directory::CreateDirectory(target_dir);
 			if (!compile_program(info->code, target_dir, info->language)) {
+				
 				result->status = JudgeStatus::CompileError;
 			} else {
-				result = execute_program(info, target_dir+"\\tmp.exe");
+				result = execute_program(info, target_dir,info->language);
 			}
 		} catch (IOException^ e) {
 			result->status = JudgeStatus::SystemError;
@@ -38,23 +39,40 @@ namespace JudgeCore
 		LanguageInfo^ language_info = language_infos[(int)language];
 		
 		StringBuilder^ argument = gcnew StringBuilder();
-		String^ file_name = target_dir + "\\tmp";
+		String^ file_name = target_dir + "\\Main";
 		File::AppendAllText(file_name+"."+language_info->extension_name, code);
 		argument->AppendFormat(language_info->argument, file_name, file_name);
 		Process^ p = gcnew Process();
 		setStartInfo(p->StartInfo, language_info->compiler_name, argument->ToString());
 		p->Start();
 		p->WaitForExit();
-		Console::WriteLine(p->StandardError->ReadToEnd());
 		return !p->ExitCode;
 	}
-	JudgeResult^ Judger::execute_program(const ProblemInfo^ info, String^ target_dir)
+	JudgeResult^ Judger::execute_program(const ProblemInfo^ info, String^ target_dir,Language language)
 	{
 		JudgeResult^ result = gcnew JudgeResult();
 		Process^ p = gcnew Process();
-		setStartInfo(p->StartInfo, target_dir, nullptr);
+		String^ start_pro;
+		String^ pro_arg;
+		switch (language) {
+		case Language::C: case Language::CPP:
+			start_pro = target_dir + "\\Main.exe";
+			pro_arg = nullptr;
+			break;
+		case Language::JAVA:
+			start_pro = "java";
+			pro_arg = "-classpath "+ target_dir +" " +"Main";
+			break;
+
+		default:
+			start_pro = target_dir + ".exe";
+			pro_arg = nullptr;
+			break;
+		}
+		setStartInfo(p->StartInfo, start_pro, pro_arg);
 		p->Start();
 		p->StandardInput->Write(info->test_case);
+		p->StandardInput->Close();
 		long long peak_mem = 0;
 		for (int i = 0; i < 15; ++i) {
 			if (!p->HasExited) {
@@ -75,7 +93,7 @@ namespace JudgeCore
 			return result;
 		}
 		if (info->max_mem * 1024 < peak_mem) {
-			result->status = JudgeStatus::TimeLimitError;
+			result->status = JudgeStatus::MemoryLimitError;
 			return result;
 		}
 		if (p->ExitCode != 0) {
@@ -91,7 +109,9 @@ namespace JudgeCore
 	}
 	bool Judger::test_result(String^ test_result, String^ right_result)
 	{
-		return test_result->Replace("\r","")->Equals(right_result);
+		auto i = test_result->Replace("\r", "")->Trim();
+		auto j= right_result->Replace("\r", "")->Trim();
+		return i->Equals(j);
 	}
 	void Judger::setStartInfo(System::Diagnostics::ProcessStartInfo^ info, String^ file_name, String^ argument)
 	{

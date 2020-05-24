@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+@@include("./include/head.html")
+
+<body>
+
+    <div id="nav">
+        @@include("./include/nav.html")
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
+            <div><strong>
+                    提交记录
+                </strong></div>
+            @@include("./include/submission.html")
+
+        </div>
+        <div class="col-md-3">
+            <img src="/img/avatar.jpg" />
+            <div>
+                <strong>用户名:</strong>
+                <span data-bind="text:home_nickname"></span>
+            </div>
+            <div>
+                <strong>解决问题数:</strong>
+                <span data-bind="text:solved_num"></span>
+            </div>
+            <div id="add_problem" class="d-none" data-bind="if:model.nickname()==model.home_nickname()">
+                <button class=" btn btn-sm btn-secondary" data-target="#problem_modal" data-toggle="modal">
+                    <span>添加新问题</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="problem_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">问题标题</label>
+                            <input type="text" class="form-control" id="problem_title"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">最大时限(单位ms)</label>
+                            <input type="number" class="form-control" id="max_time">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">最大内存(单位Kb)</label>
+                            <input type="number" class="form-control" id="max_memory">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">问题描述</label>
+                            <input type="file" accept="text/plain" class="form-control-file" id="description">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">测试用例</label>
+                            <input type="file" accept="text/plain" class="form-control-file" id="test_case">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">预计输出</label>
+                            <input type="file" accept="text/plain" class="form-control-file" id="std_output">
+                        </div>
+                        <span id="problem_info" class="info text-danger text-center" data-bind="text:problem_info"></span>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="add_problem()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/js/home.js"></script>
+<script src="/js/submission.js"></script>
+<script>
+    init();
+    home_init();
+</script>
+
+</html>
