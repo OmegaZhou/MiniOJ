@@ -48,7 +48,7 @@ namespace JudgeCore
 		static bool compile_program(String^ code, String^ target_dir, Language language);
 		static bool test_result(String^ test_result, String^ right_result);
 		static JudgeResult^ execute_program(const ProblemInfo^ info, String^ target_dir,Language lang);
-		static array<LanguageInfo^>^ language_infos = { gcnew LanguageInfo(" {0}.cpp  -O2 -o {1}.exe","g++","cpp"),
+		static array<LanguageInfo^>^ language_infos = { gcnew LanguageInfo(" {0}.cpp  -std=c++11 -O2 -o {1}.exe","g++","cpp"),
 			gcnew LanguageInfo("{0}.c -O2 -o {1}.exe","gcc","c"),gcnew LanguageInfo("-O {0}.java ","javac","java") };
 	};
 }

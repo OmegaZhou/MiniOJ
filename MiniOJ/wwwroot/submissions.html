@@ -168,14 +168,15 @@
     </thead>
     <tbody data-bind="foreach: submissions">
       <tr>
-        <th scope="row"><a href="javascript:void(0)" data-bind='attr:{onclick:"show_code("+$index()+")"}'
-            ><span data-bind="text:$data.submissionId">
+        <th scope="row"><a href="javascript:void(0)" data-bind='attr:{onclick:"show_code("+$index()+")"}'><span
+              data-bind="text:$data.submissionId">
 
             </span></a></th>
         <td data-bind="text:$data.createTime"></td>
         <td><a data-bind="attr:{href:'/home.html?nickname='+$data.nickName}"><span
               data-bind="text:$data.nickName"></span></a></td>
-        <td data-bind="text:$data.title"></td>
+        <td><a data-bind="attr:{href:'/problem.html?title='+encodeURIComponent($data.title)}"><span
+              data-bind="text:$data.title"></span></a></td>
         <td data-bind="text:$data.lang"></td>
         <td data-bind="text:$data.status"></td>
         <td data-bind="text:$data.time+'ms'"></td>
@@ -202,17 +203,16 @@
 
   <div id="code_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    
+
     <div class="modal-dialog modal-lg">
-      
+
       <div class="modal-content">
         <div class="modal-header">
           <strong>
             本次提交代码
           </strong>
         </div>
-        <pre id="code" class="ace_editor"
-        style="min-height:400px"><textarea class="ace_text-input"></textarea></pre>
+        <pre id="code" class="ace_editor" style="min-height:400px"><textarea class="ace_text-input"></textarea></pre>
       </div>
     </div>
   </div>

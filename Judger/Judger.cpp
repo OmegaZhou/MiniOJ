@@ -45,6 +45,10 @@ namespace JudgeCore
 		Process^ p = gcnew Process();
 		setStartInfo(p->StartInfo, language_info->compiler_name, argument->ToString());
 		p->Start();
+		p->WaitForExit(100000);
+		if (!p->HasExited) {
+			p->Kill();
+		}
 		p->WaitForExit();
 		return !p->ExitCode;
 	}
@@ -74,17 +78,25 @@ namespace JudgeCore
 		p->StandardInput->Write(info->test_case);
 		p->StandardInput->Close();
 		long long peak_mem = 0;
-		for (int i = 0; i < 15; ++i) {
+		do {
 			if (!p->HasExited) {
 				//p->Refresh();
 				peak_mem = p->PeakPagedMemorySize64;
+				if (peak_mem > info->max_mem * 1024) {
+					break;
+				}
+			} else {
+				break;
 			}
-			p->WaitForExit(info->max_time / 5);
-		}
+			if (p->WaitForExit(1000)) {
+				break;
+			}
+		} while (p->TotalProcessorTime.TotalMilliseconds < info->max_time);
 		if (!p->HasExited) {
 			p->Kill();
+			p->WaitForExit();
 		}
-		p->WaitForExit();
+		
 		auto& t = p->TotalProcessorTime;
 		result->time = t.TotalMilliseconds;
 		result->memory = peak_mem / 1024;
