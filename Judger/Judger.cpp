@@ -23,8 +23,9 @@ namespace JudgeCore
 			} else {
 				result = execute_program(info, target_dir,info->language);
 			}
-		} catch (IOException^ e) {
+		} catch (Exception^ e) {
 			result->status = JudgeStatus::SystemError;
+			return result;
 		} finally {
 			if (Directory::Exists(target_dir)) {
 				Directory::Delete(target_dir, true);

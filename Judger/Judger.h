@@ -22,9 +22,9 @@ namespace JudgeCore
 	public ref class ProblemInfo
 	{
 	public:
-		Int32 max_time;			//单位为Mb
+		Int32 max_time;				//单位为Mb
 		Int32 max_mem;				//单位为ms
-		String^ code;
+		String^ code;				
 		String^ test_case;
 		String^ right_result;
 		Language language;
