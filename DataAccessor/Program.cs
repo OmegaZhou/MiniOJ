@@ -52,7 +52,7 @@ namespace DataAccessor
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
-                Utils.Logger.GetInstance().Error(e.Message);
+                //Utils.Logger.GetInstance().Error(e.Message);
             }
         }
     }
